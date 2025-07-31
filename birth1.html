@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+      background-image: url('birthdaybg.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: background-image 0.5s ease-in-out;
+      color: white;
+    }
+
+    .container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      backdrop-filter: blur(2px);
+      text-align: center;
+      padding: 10px;
+    }
+
+    .input-screen input {
+      padding: 15px;
+      font-size: 5vw;
+      border: none;
+      border-radius: 10px;
+      width: 80vw;
+      max-width: 300px;
+      box-shadow: 0 0 10px #ff4081;
+    }
+
+    .input-screen button {
+      padding: 12px 25px;
+      font-size: 4.5vw;
+      max-width: 200px;
+      border: none;
+      border-radius: 10px;
+      background: #ff4081;
+      color: white;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    .carousel-container {
+      display: none;
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      perspective: 1500px;
+      overflow: hidden;
+    }
+
+    .carousel {
+      width: 90vw;
+      height: 90vw;
+      max-width: 300px;
+      max-height: 300px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform-style: preserve-3d;
+      transform: translate(-50%, -50%) rotateX(0deg) rotateY(0deg);
+    }
+
+    .carousel .photo {
+      position: absolute;
+      width: 80vw;
+      max-width: 280px;
+      height: 45vw;
+      max-height: 180px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    }
+
+    .carousel .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .center-name {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 6vw;
+      font-family: 'Pacifico', cursive;
+      color: #ff69b4;
+      text-shadow: 0 0 10px #fff, 0 0 20px #ff69b4, 0 0 30px #ff1493;
+      z-index: 10;
+      white-space: nowrap;
+      animation: pulse 2s infinite alternate;
+      text-align: center;
+    }
+
+    .greeting-text {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 15px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 12px;
+      max-width: 95vw;
+      font-size: 4vw;
+      font-family: 'Pacifico', cursive;
+      text-align: center;
+      color: #fff;
+      text-shadow: 0 0 5px #000, 0 0 10px #ff4081;
+      z-index: 20;
+      line-height: 1.5;
+    }
+
+    @keyframes pulse {
+      from { transform: translate(-50%, -50%) scale(1); }
+      to { transform: translate(-50%, -50%) scale(1.1); }
+    }
+
+    .floating-element {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .heart {
+      font-size: 25px;
+      color: #ff69b4;
+      animation: floatEffect var(--animationDuration) linear infinite;
+    }
+
+    .balloon {
+      font-size: 50px;
+      animation: floatEffect var(--animationDuration) ease-in-out infinite;
+    }
+
+    @keyframes floatEffect {
+      0% {
+        transform: translate(var(--startX), var(--startY)) rotate(var(--startRotate));
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.9;
+      }
+      90% {
+        opacity: 0.9;
+      }
+      100% {
+        transform: translate(var(--endX), var(--endY)) rotate(var(--endRotate));
+        opacity: 0;
+      }
+    }
+
+    .firework {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: white;
+      border-radius: 50%;
+      animation: explode 1s ease-out forwards;
+    }
+
+    @keyframes explode {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(10); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container input-screen" id="inputScreen">
+    <h1>🎉 Enter Your Cute Name Panduu 🎂</h1>
+    <input type="text" id="nameInput" placeholder="Type name here...">
+    <br>
+    <button onclick="startBirthday()">Show Surprise</button>
+  </div>
+
+  <div class="carousel-container" id="carouselScreen">
+    <div class="center-name" id="centerName"></div>
+    <div class="greeting-text">
+      Wishing you a day filled with love, joy, and beautiful memories! 🎂🎉<br><br>
+      You’ve always been that one girl who could understand me without even trying — the one who made every moment feel special just by being there. 💫<br><br>
+      From the day we first met, it was all fun — just like Manju and her mysterious Captain. Then came Panduu, and of course, the unstoppable Oyee duo 😄. Every upgrade just brought us closer, and honestly… I’m not done upgrading with you yet.<br><br>
+      Now it’s like we’ve got this little routine — daily chats, random messages, and your voice notes? They’re literally the highlight of my day. 🎧💖 They're sweet, soft, and honestly… addictive.<br><br>
+      I don’t know what the future holds, but I really hope it’s more of this — more laughs, more nicknames, more connection. Just you and me, being us. Ela chapalli antey chala unnai...Any way thank you coming into my life..💖
+    </div>
+    <div class="carousel" id="carousel">
+      <div class="photo" style="transform: rotateY(0deg) translateZ(400px);"><img src="photo1.jpg"></div>
+      <div class="photo" style="transform: rotateY(60deg) translateZ(400px);"><img src="photo2.jpg"></div>
+      <div class="photo" style="transform: rotateY(120deg) translateZ(400px);"><img src="photo3.jpg"></div>
+      <div class="photo" style="transform: rotateY(180deg) translateZ(400px);"><img src="photo4.jpg"></div>
+      <div class="photo" style="transform: rotateY(240deg) translateZ(400px);"><img src="photo5.jpg"></div>
+      <div class="photo" style="transform: rotateY(300deg) translateZ(400px);"><img src="photo6.jpg"></div>
+    </div>
+  </div>
+
+  <audio id="birthdayMusic" loop autoplay>
+    <source src="your_music_file.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    const body = document.body;
+    const birthdayMusic = document.getElementById('birthdayMusic');
+
+    function createFloatingElement(className, emoji, baseSize, duration) {
+      const el = document.createElement('div');
+      el.className = `floating-element ${className}`;
+      el.innerText = emoji;
+
+      const startX = `${Math.random() * 100}vw`;
+      const endX = `${Math.random() * 100}vw`;
+      const startY = '110vh';
+      const endY = '-10vh';
+
+      el.style.setProperty('--startX', startX);
+      el.style.setProperty('--startY', startY);
+      el.style.setProperty('--endX', endX);
+      el.style.setProperty('--endY', endY);
+      el.style.setProperty('--startRotate', `${Math.random() * 360}deg`);
+      el.style.setProperty('--endRotate', `${Math.random() * 360}deg`);
+      el.style.setProperty('--animationDuration', `${duration}s`);
+      el.style.fontSize = `${baseSize + Math.random() * 10}px`;
+
+      document.body.appendChild(el);
+
+      el.addEventListener('animationend', () => el.remove());
+    }
+
+    function launchFirework() {
+      const firework = document.createElement('div');
+      firework.className = 'firework';
+      firework.style.left = Math.random() * window.innerWidth + 'px';
+      firework.style.top = Math.random() * window.innerHeight + 'px';
+      firework.style.background = `hsl(${Math.random() * 360}, 100%, 70%)`;
+      document.body.appendChild(firework);
+      setTimeout(() => firework.remove(), 1000);
+    }
+
+    function startBirthday() {
+      const name = document.getElementById('nameInput').value.trim();
+      if (!name) return;
+      document.getElementById('centerName').innerText = `To: ${name}`;
+      document.getElementById('inputScreen').style.display = 'none';
+      document.getElementById('carouselScreen').style.display = 'block';
+
+      setInterval(() => createFloatingElement('heart', '❤️', 20, 12), 300);
+      setInterval(() => createFloatingElement('balloon', '🎈', 35, 16), 500);
+      setInterval(launchFirework, 800);
+      birthdayMusic.play().catch(()=>{});
+    }
+
+    const carousel = document.getElementById("carousel");
+    let rotateX = 0, rotateY = 0, isDragging = false, startX = 0, startY = 0;
+
+    document.addEventListener('mousedown', e => {
+      isDragging = true;
+      startX = e.pageX;
+      startY = e.pageY;
+    });
+    document.addEventListener('mouseup', () => isDragging = false);
+    document.addEventListener('mousemove', e => {
+      if (!isDragging) return;
+      const dx = e.pageX - startX;
+      const dy = e.pageY - startY;
+      rotateY += dx * 0.3;
+      rotateX -= dy * 0.3;
+      carousel.style.transform = `translate(-50%, -50%) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      startX = e.pageX;
+      startY = e.pageY;
+    });
+  </script>
+</body>
+</html>
